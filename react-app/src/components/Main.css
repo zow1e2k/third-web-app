@@ -1,3 +1,20 @@
 .body {
 
 }
+input[type="text"] {
+    width: 19.75em;
+    height: 2em;
+    border: none;
+    font: inherit;
+    color: #005500;
+    background-color: #D5D5D5;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #000;
+}
+.arr {
+    display: flex;
+    flex-direction: column;
+}

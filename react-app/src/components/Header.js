@@ -4,9 +4,10 @@ import "./Header.css";
 function Header() {
     return (
         <header className="navbar">
-            This is the header
+            Составление списка дел онлайн
         </header>
     );
 }
+
 
 export default Header

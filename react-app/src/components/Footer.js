@@ -4,7 +4,7 @@ import "./Footer.css";
 function Footer() {
     return (
         <footer>
-            This is the footer
+            Конец списка дел :)
         </footer>
     );
 }
