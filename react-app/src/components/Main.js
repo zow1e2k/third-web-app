@@ -1,15 +1,16 @@
 import React from "react";
 import "./Main.css";
-import List from "../items/List";
+import Item from "../items/Item";
+import items from "../items/ItemList";
 
 function Main() {
+    const x = items.map(
+        item => <Item key={item.id} x={item}/>
+    );
+
     return (
         <body>
-            <List />
-            <List />
-            <List />
-            <List />
-            <List />
+            {x}
         </body>
     );
 }
