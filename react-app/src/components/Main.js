@@ -19,6 +19,17 @@ const Business = {
     count: 0
 };
 
+let valid = {
+    isNotEmpty:function (str) {
+        let pattern =/\S+/;
+        return pattern.test(str);
+    },
+    isNumber:function(str) {
+        let pattern = /^\d+$/;
+        return pattern.test(str);
+    }
+};
+
 let count = Business.count;
 
 class Main extends React.Component {
@@ -30,9 +41,17 @@ class Main extends React.Component {
 
     add() {
         const {name, hour, min, description} = this.state;
-        if (name === '' || hour === '' || min === '' || description === '') {
+        if (!valid.isNotEmpty(name)
+            || !valid.isNotEmpty(hour)
+            || !valid.isNotEmpty(min)
+            || !valid.isNotEmpty(description)) {
             return;
         }
+
+        if (!valid.isNumber(hour) || !valid.isNumber(min)) {
+            return;
+        }
+
         Business.add(count++, name, hour, min, description);
         this.forceUpdate();
     }
