@@ -1,14 +1,14 @@
 import React from "react";
 import "./Main.css";
+import moment from 'moment';
+import Clock from 'react-live-clock';
 
 const Business = {
     list: {},
-    add: (id, name, hour, min, description) => {
+    add: (id, name, description) => {
         Business.list[id] = {
             id: id,
             name: name,
-            hour: hour,
-            min: min,
             description: description,
             isComplete: false
         };
@@ -27,10 +27,6 @@ let valid = {
     isNotEmpty:function (str) {
         let pattern =/\S+/;
         return pattern.test(str);
-    },
-    isNumber:function(str) {
-        let pattern = /^\d+$/;
-        return pattern.test(str);
     }
 };
 
@@ -39,24 +35,17 @@ let count = Business.count;
 class Main extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {name: '', hour: '', min: '', description: ''};
+        this.state = {name: '', description: ''};
         this.handleChange = this.handleChange.bind(this);
     }
 
     add() {
-        const {name, hour, min, description} = this.state;
-        if (!valid.isNotEmpty(name)
-            || !valid.isNotEmpty(hour)
-            || !valid.isNotEmpty(min)
-            || !valid.isNotEmpty(description)) {
+        const {name, description} = this.state;
+        if (!valid.isNotEmpty(name) || !valid.isNotEmpty(description)) {
             return;
         }
 
-        if (!valid.isNumber(hour) || !valid.isNumber(min)) {
-            return;
-        }
-
-        Business.add(count++, name, hour, min, description);
+        Business.add(count++, name, description);
         this.forceUpdate();
     }
 
@@ -75,6 +64,9 @@ class Main extends React.Component {
     }
 
     render() {
+        const hours = new Date().getHours();
+        const mins = new Date().getMinutes();
+        const secs = new Date().getSeconds();
         count = Business.count;
         let str = '';
         let arr = [];
@@ -86,9 +78,11 @@ class Main extends React.Component {
                 }
 
                 str = "Дело: " + Business.list[i].name + "\n"
-                    + "Час: " + Business.list[i].hour + "\n"
-                    + "Минуты: " + Business.list[i].min + "\n"
                     + "Описание: " + Business.list[i].description + "\n"
+                    + "Было создано/изменено в: "
+                    + (hours < 10 ? '0' + hours : hours) + ":"
+                    + (mins < 10 ? '0' + mins : mins) + ":"
+                    + (secs < 10 ? '0' + secs : secs) + "\n"
                     + (Business.list[i].isComplete ? "Выполнено" : "Не выполнено");
                 arr[i] = str;
             }
@@ -100,18 +94,11 @@ class Main extends React.Component {
                 <input type="text" value={this.state.name}
                        onChange={(e) => this.handleChange(e, 'name')}
                 />
-                Час
-                <input type="text" value={this.state.hour}
-                       onChange={(e) => this.handleChange(e, 'hour')}
-                />
-                Минуты
-                <input type="text" value={this.state.min}
-                       onChange={(e) => this.handleChange(e, 'min')}
-                />
                 Комментарий
                 <input type="text" value={this.state.description}
                        onChange={(e) => this.handleChange(e, 'description')}
                 />
+
                 <button onClick={() => this.add()}>Добавить</button>
 
                 {Object.keys(arr).map(arrID => (
