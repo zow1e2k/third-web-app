@@ -9,12 +9,16 @@ const Business = {
             name: name,
             hour: hour,
             min: min,
-            description: description
+            description: description,
+            isComplete: false
         };
         Business.count++;
     },
     remove: (id) => {
         Business.list[id] = {};
+    },
+    check: (id) => {
+        Business.list[id].isComplete = !Business.list[id].isComplete;
     },
     count: 0
 };
@@ -61,6 +65,11 @@ class Main extends React.Component {
         this.forceUpdate();
     }
 
+    check(id) {
+        Business.check(id);
+        this.forceUpdate();
+    }
+
     handleChange(e, name) {
         this.setState({[name]: e.target.value});
     }
@@ -79,7 +88,8 @@ class Main extends React.Component {
                 str = "Дело: " + Business.list[i].name + "\n"
                     + "Час: " + Business.list[i].hour + "\n"
                     + "Минуты: " + Business.list[i].min + "\n"
-                    + "Описание: " + Business.list[i].description;
+                    + "Описание: " + Business.list[i].description + "\n"
+                    + (Business.list[i].isComplete ? "Выполнено" : "Не выполнено");
                 arr[i] = str;
             }
         }
@@ -107,6 +117,7 @@ class Main extends React.Component {
                 {Object.keys(arr).map(arrID => (
                     <div key={arrID} className="arr">
                         {arr[arrID]}
+                        <button onClick={() => this.check(arrID)}>Изменить состояние</button>
                         <button onClick={() => this.remove(arrID)}>Удалить</button>
                     </div>
                 ))}
